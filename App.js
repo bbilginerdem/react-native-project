@@ -1,24 +1,65 @@
-import { StyleSheet, View, TextInput, Button, Text } from "react-native";
+import {
+	StyleSheet,
+	View,
+	TextInput,
+	Button,
+	Text,
+	ScrollView,
+} from "react-native";
+import React, { useState } from "react";
+
+import Header from "./src/components/Header";
 
 export default function App() {
+	const [todoItem, setTodoItem] = useState("");
+	const [todoList, setTodoList] = useState([]);
+
+	const addTodoList = () => {
+		setTodoList([...todoList, todoItem]);
+		console.log(todoList);
+	};
+
 	return (
-		<View style={styles.container}>
-			<View>
-				<TextInput placeholder="Exter Todo Item" />
-				<Button title="Add Todo" onPress={() => console.log("Button clicked")} />
-			</View>
-			<View>
-				<Text>List of Todos</Text>
-			</View>
+		<View>
+			<Header title="Todo List Yey!"/>
+			<ScrollView style={styles.container}>
+				<View>
+					<TextInput
+						placeholder="Enter Todo Item"
+						style={styles.textInput}
+						onChangeText={(text) => setTodoItem(text)}
+						value={todoItem}
+					/>
+					<Button title="Add Todo" onPress={addTodoList} />
+				</View>
+				<View>
+					{todoList.map((todo) => (
+						<View style={styles.todoItem} key={todo}>
+							<Text>{todo}</Text>
+						</View>
+					))}
+				</View>
+			</ScrollView>
 		</View>
 	);
 }
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
-		backgroundColor: "#fff",
-		alignItems: "center",
-		justifyContent: "center",
+		padding: 25,
+	},
+	textInput: {
+		padding: 10,
+		borderColor: "#000000",
+		marginBottom: 10,
+		borderWidth: 1,
+	},
+	todoItem: {
+		marginTop: 10,
+		padding: 20,
+		backgroundColor: "#f2f2f2",
+		borderRadius: 10,
+		borderWidth: 1,
+		borderColor: "gray",
 	},
 });
